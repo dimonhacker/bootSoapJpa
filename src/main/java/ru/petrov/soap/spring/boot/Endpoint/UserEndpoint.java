@@ -1,12 +1,15 @@
 package ru.petrov.soap.spring.boot.Endpoint;
 
 
-import ru.petrov.soap.spring.boot.Generated.GetUserRequest;
-import ru.petrov.soap.spring.boot.Generated.GetUserResponse;
+import localhost.GetUserRequest;
+import localhost.GetUserResponse;
+import localhost.GetUsers;
+import localhost.SoapUser;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
+
 import ru.petrov.soap.spring.boot.Service.UserService;
 
 @Endpoint
@@ -24,10 +27,17 @@ public class UserEndpoint {
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getUserRequest")
     @ResponsePayload
-    public GetUserResponse getUserResponse(@RequestPayload GetUserRequest request){
-
+    public GetUserResponse getUser(@RequestPayload GetUserRequest request){
         GetUserResponse getUserResponse = new GetUserResponse();
         getUserResponse.setUser(userService.findByLogin(request.getLogin()));
         return getUserResponse;
     }
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getAllUsers")
+    @ResponsePayload
+    public GetUsers getAllUsers(){
+        GetUsers getUsers = new GetUsers();
+        getUsers.getUsers().addAll(userService.findAll());
+        return getUsers;
+    }
+
 }
