@@ -22,6 +22,7 @@ public class WebServiceConfig extends WsConfigurerAdapter {
         servlet.setTransformWsdlLocations(true);
         return new ServletRegistrationBean(servlet, "/ws/*");
     }
+
     @Bean
     public XsdSchema userSchema() {
         return new SimpleXsdSchema(new ClassPathResource("user.xsd"));

@@ -1,10 +1,7 @@
 package ru.petrov.soap.spring.boot.Entity;
 
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -16,7 +13,12 @@ public class SoapUserEntity {
     private String login;
 
     private String password;
-    @ManyToMany(mappedBy = "users")
+    @ManyToMany
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_login"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
     private List<SoapRoleEntity> roles;
 
     public SoapUserEntity() {
