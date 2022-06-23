@@ -21,6 +21,26 @@
                     </xs:complexType>
     </xs:element>
 
+    <xs:element name="updateUserRequest">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="name" type="xs:string"/>
+                            <xs:element name="login" type="xs:string"/>
+                            <xs:element name="password" type="xs:string"/>
+                            <xs:element  name="roles" maxOccurs="unbounded" minOccurs="0" type="tns:soap-role"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+
+    <xs:element name="updateUserResponse">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="success" type="xs:boolean"/>
+                                <xs:element name="errors" type="xs:string" maxOccurs="unbounded" minOccurs="0"/>
+                            </xs:sequence>
+                        </xs:complexType>
+        </xs:element>
+
    <xs:element name="delUserRequest">
             <xs:complexType>
                 <xs:sequence>
@@ -69,7 +89,7 @@
             <xs:element name="name" type="xs:string"/>
             <xs:element name="login" type="xs:string"/>
             <xs:element name="password" type="xs:string"/>
-            <xs:element  name="roles" maxOccurs="unbounded" minOccurs="0" type="tns:soap-role"/>
+            <xs:element  name="role" maxOccurs="unbounded" minOccurs="0" type="tns:soap-role"/>
         </xs:sequence>
     </xs:complexType>
 

@@ -38,7 +38,7 @@ public class UserService {
                 List<SoapRole> soapRoleList = new ArrayList<>();
                 List<SoapRoleEntity> listRole = soapUserEntity.getRole();
                 for (SoapRoleEntity r : listRole) soapRoleList.add(getSoapRole(r));
-                soapUser.getRoles().addAll(soapRoleList);
+                soapUser.getRole().addAll(soapRoleList);
             }
         }
         return soapUser;
@@ -49,10 +49,10 @@ public class UserService {
             soapUserEntity.setLogin(soapUser.getLogin());
             soapUserEntity.setName(soapUser.getName());
             soapUserEntity.setPassword(soapUser.getPassword());
-            List<SoapRole> soapRoleList = soapUser.getRoles();
+            List<SoapRole> soapRoleList = soapUser.getRole();
             List<SoapRoleEntity> listRole = new ArrayList<>();
             for (SoapRole r : soapRoleList) listRole.add(getSoapRoleEntity(r));
-            soapUser.getRoles().addAll(soapRoleList);
+            soapUser.getRole().addAll(soapRoleList);
         }
         return soapUserEntity;
     }
@@ -85,6 +85,7 @@ public class UserService {
 
     public boolean remove(String login){
         SoapUserEntity soapUserEntity = userRepository.findByLogin(login);
+        System.out.println(soapUserEntity.getName());
         if(soapUserEntity!=null) {
             userRepository.delete(soapUserEntity);
             return true;
@@ -94,27 +95,36 @@ public class UserService {
 
     public boolean create(String name, String login ,String password, List<SoapRole> roles){
         SoapUserEntity userEntity = new SoapUserEntity();
-        userEntity.setName(name);
-        userEntity.setLogin(login);
-        userEntity.setPassword(password);
+        setUserNameLoginPass(name,login,password,userEntity);
         boolean result = true;
         if(userRepository.findByLogin(userEntity.getLogin())!=null) result = false;
         else userRepository.save(userEntity);
         if(!result) return false;
-        if(roles.size()>0)
-        for(SoapRole r: roles){
-            SoapRoleEntity soapRole = roleRepository.findByName(r.getName());
-            System.out.println("finded: "+soapRole.getName());
-            List<SoapUserEntity> users = soapRole.getUsers();
-            if(users==null) users = new ArrayList<>();
-            users.add(userEntity);
-            System.out.println(soapRole.getName());
-            for(SoapUserEntity s : soapRole.getUsers()) System.out.println(s.getLogin());
-            roleRepository.save(soapRole);
-        }
+        saveRoles(roles,userEntity);
         return true;
+    }
+    public SoapUserEntity setUserNameLoginPass(String name, String login ,String password, SoapUserEntity userEntity){
+        userEntity.setName(name);
+        userEntity.setLogin(login);
+        userEntity.setPassword(password);
+        return userEntity;
+    }
+    public void  saveRoles(List<SoapRole> roles, SoapUserEntity userEntity){
+        if(roles.size()>0)
+            for(SoapRole r: roles){
+                SoapRoleEntity soapRole = roleRepository.findByName(r.getName());
+                List<SoapUserEntity> users = soapRole.getUsers();
+                if(users==null) users = new ArrayList<>();
+                users.add(userEntity);
+                roleRepository.save(soapRole);
+            }
     }
     public boolean validate(String name, String login ,String password){
         return true;
+    }
+
+    public boolean update(String name, String login, String password, List<SoapRole> roles) {
+        if(remove(login)) return create(name,login,password,roles);
+        else return false;
     }
 }
