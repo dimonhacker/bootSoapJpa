@@ -1,9 +1,6 @@
 package ru.petrov.soap.spring.boot.Entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 
 @Table(name = "SoapRole")
@@ -15,7 +12,7 @@ public class SoapRoleEntity {
 
     private String name;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL)
     private List<SoapUserEntity> users;
 
     public SoapRoleEntity() {
@@ -40,9 +37,16 @@ public class SoapRoleEntity {
     public String getName() {
         return name;
     }
-
-
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "SoapRoleEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", users=" + users +
+                '}';
     }
 }

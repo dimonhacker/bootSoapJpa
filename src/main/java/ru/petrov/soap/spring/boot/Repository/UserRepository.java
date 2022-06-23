@@ -1,10 +1,9 @@
 package ru.petrov.soap.spring.boot.Repository;
 
-import localhost.SoapUser;
-import ru.petrov.soap.spring.boot.Entity.SoapUserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import ru.petrov.soap.spring.boot.Entity.SoapUserEntity;
 
 @Repository
 public interface UserRepository extends JpaRepository<SoapUserEntity,String> {

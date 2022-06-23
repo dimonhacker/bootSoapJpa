@@ -5,6 +5,7 @@ import localhost.SoapUser;
 import org.springframework.stereotype.Service;
 import ru.petrov.soap.spring.boot.Entity.SoapRoleEntity;
 import ru.petrov.soap.spring.boot.Entity.SoapUserEntity;
+import ru.petrov.soap.spring.boot.Repository.RoleRepository;
 import ru.petrov.soap.spring.boot.Repository.UserRepository;
 
 import java.util.ArrayList;
@@ -14,15 +15,17 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
     }
 
 
     public SoapUser findByLogin(String login) {
         SoapUserEntity soapUserEntity = userRepository.findByLogin(login);
-        return getSoapUser(soapUserEntity, false);
+        return getSoapUser(soapUserEntity, true);
     }
 
     public SoapUser getSoapUser(SoapUserEntity soapUserEntity, boolean requireRoles) {
@@ -56,5 +59,16 @@ public class UserService {
             soapUsers.add(getSoapUser(sue, false));
         }
         return soapUsers;
+    }
+
+
+
+    public boolean remove(String login){
+        SoapUserEntity soapUserEntity = userRepository.findByLogin(login);
+        if(soapUserEntity!=null) {
+            userRepository.delete(soapUserEntity);
+            return true;
+        }
+        else  return false;
     }
 }

@@ -13,7 +13,7 @@ public class SoapUserEntity {
     private String login;
 
     private String password;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_login"),
@@ -55,4 +55,6 @@ public class SoapUserEntity {
     public void setRole(List<SoapRoleEntity> role) {
         this.roles = role;
     }
+
+
 }

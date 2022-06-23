@@ -1,9 +1,7 @@
 package ru.petrov.soap.spring.boot.Endpoint;
 
 
-import localhost.GetAllUsersResponse;
-import localhost.GetUserRequest;
-import localhost.GetUserResponse;
+import localhost.*;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
@@ -38,6 +36,15 @@ public class UserEndpoint {
         GetAllUsersResponse getUsers = new GetAllUsersResponse();
         getUsers.getUsers().addAll(userService.findAll());
         return getUsers;
+    }
+
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "delUserRequest")
+    @ResponsePayload
+    public DelUserResponse getAllUsers(@RequestPayload DelUserRequest request) {
+        DelUserResponse delUserResponse=new DelUserResponse();
+        boolean success = userService.remove(request.getLogin());
+        delUserResponse.setSuccess(success);
+        return delUserResponse;
     }
 
 }
