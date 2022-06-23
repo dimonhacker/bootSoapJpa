@@ -43,12 +43,32 @@ public class UserService {
         }
         return soapUser;
     }
+    public SoapUserEntity getSoapUserEntity(SoapUser soapUser) {
+        SoapUserEntity soapUserEntity = new SoapUserEntity();
+        if (soapUser != null) {
+            soapUserEntity.setLogin(soapUser.getLogin());
+            soapUserEntity.setName(soapUser.getName());
+            soapUserEntity.setPassword(soapUser.getPassword());
+            List<SoapRole> soapRoleList = soapUser.getRoles();
+            List<SoapRoleEntity> listRole = new ArrayList<>();
+            for (SoapRole r : soapRoleList) listRole.add(getSoapRoleEntity(r));
+            soapUser.getRoles().addAll(soapRoleList);
+        }
+        return soapUserEntity;
+    }
 
     public SoapRole getSoapRole(SoapRoleEntity role) {
         SoapRole soapRole = new SoapRole();
         soapRole.setId(role.getId());
         soapRole.setName(role.getName());
         return soapRole;
+    }
+
+    public SoapRoleEntity getSoapRoleEntity(SoapRole role) {
+        SoapRoleEntity soapRoleEntity = new SoapRoleEntity();
+        soapRoleEntity.setId(role.getId());
+        soapRoleEntity.setName(role.getName());
+        return soapRoleEntity;
     }
 
     public List<SoapUser> findAll() {
@@ -70,5 +90,31 @@ public class UserService {
             return true;
         }
         else  return false;
+    }
+
+    public boolean create(String name, String login ,String password, List<SoapRole> roles){
+        SoapUserEntity userEntity = new SoapUserEntity();
+        userEntity.setName(name);
+        userEntity.setLogin(login);
+        userEntity.setPassword(password);
+        boolean result = true;
+        if(userRepository.findByLogin(userEntity.getLogin())!=null) result = false;
+        else userRepository.save(userEntity);
+        if(!result) return false;
+        if(roles.size()>0)
+        for(SoapRole r: roles){
+            SoapRoleEntity soapRole = roleRepository.findByName(r.getName());
+            System.out.println("finded: "+soapRole.getName());
+            List<SoapUserEntity> users = soapRole.getUsers();
+            if(users==null) users = new ArrayList<>();
+            users.add(userEntity);
+            System.out.println(soapRole.getName());
+            for(SoapUserEntity s : soapRole.getUsers()) System.out.println(s.getLogin());
+            roleRepository.save(soapRole);
+        }
+        return true;
+    }
+    public boolean validate(String name, String login ,String password){
+        return true;
     }
 }

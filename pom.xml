@@ -77,7 +77,7 @@
 				</executions>
 				<configuration>
 					<sources>
-						<source>${project.basedir}/src/main/resources/user.xsd</source>
+						<source>${project.basedir}/src/main/resources/schema.xsd</source>
 					</sources>
 				</configuration>
 			</plugin>

@@ -10,15 +10,11 @@ public class SoapUserEntity {
     private String name;
 
     @Id
+    @Column(unique = true)
     private String login;
 
     private String password;
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "users_roles",
-            joinColumns = @JoinColumn(name = "user_login"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
+    @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
     private List<SoapRoleEntity> roles;
 
     public SoapUserEntity() {
@@ -56,5 +52,13 @@ public class SoapUserEntity {
         this.roles = role;
     }
 
-
+    @Override
+    public String toString() {
+        return "SoapUserEntity{" +
+                "name='" + name + '\'' +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", roles=" + roles +
+                '}';
+    }
 }

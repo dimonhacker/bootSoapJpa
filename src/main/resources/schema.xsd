@@ -1,12 +1,13 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://localhost"
            targetNamespace="http://localhost" elementFormDefault="qualified">
 
-    <xs:element name="createUserRequest">
+<xs:element name="createUserRequest">
                 <xs:complexType>
                     <xs:sequence>
                         <xs:element name="name" type="xs:string"/>
                         <xs:element name="login" type="xs:string"/>
                         <xs:element name="password" type="xs:string"/>
+                        <xs:element  name="roles" maxOccurs="unbounded" minOccurs="0" type="tns:soap-role"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
@@ -20,8 +21,7 @@
                     </xs:complexType>
     </xs:element>
 
-
-    <xs:element name="delUserRequest">
+   <xs:element name="delUserRequest">
             <xs:complexType>
                 <xs:sequence>
                     <xs:element name="login" type="xs:string"/>
@@ -69,8 +69,7 @@
             <xs:element name="name" type="xs:string"/>
             <xs:element name="login" type="xs:string"/>
             <xs:element name="password" type="xs:string"/>
-            <xs:element  name="roles" maxOccurs="unbounded" minOccurs="0" type="tns:soap-role">
-            </xs:element>
+            <xs:element  name="roles" maxOccurs="unbounded" minOccurs="0" type="tns:soap-role"/>
         </xs:sequence>
     </xs:complexType>
 
