@@ -43,6 +43,7 @@ public class UserService {
         }
         return soapUser;
     }
+
     public SoapUserEntity getSoapUserEntity(SoapUser soapUser) {
         SoapUserEntity soapUserEntity = new SoapUserEntity();
         if (soapUser != null) {
@@ -82,30 +83,30 @@ public class UserService {
     }
 
 
-
-    public boolean remove(String login){
+    public boolean remove(String login) {
         SoapUserEntity soapUserEntity = userRepository.findByLogin(login);
-       if(soapUserEntity!=null) {
-           userRepository.delete(soapUserEntity);
-       }
-       return true;
+        if (soapUserEntity != null) {
+            userRepository.deleteByLogin(login);
+            userRepository.delete(soapUserEntity);
+        }
+        return true;
     }
 
-    public boolean create(String name, String login ,String password, List<SoapRole> roles){
-        if(userRepository.findByLogin(login)!=null) return false;
+    public boolean create(String name, String login, String password, List<SoapRole> roles) {
+        if (userRepository.findByLogin(login) != null) return false;
         SoapUserEntity userEntity = new SoapUserEntity();
         userEntity.setName(name);
         userEntity.setLogin(login);
         userEntity.setPassword(password);
         userRepository.save(userEntity);
-        saveRoles(roles,userEntity);
+        saveRoles(roles, userEntity);
         return true;
     }
 
-    public void  saveRoles(List<SoapRole> roles, SoapUserEntity userEntity){
+    public void saveRoles(List<SoapRole> roles, SoapUserEntity userEntity) {
         System.out.println(roles.size());
-        if(roles.size()>0)
-            for(SoapRole r: roles){
+        if (roles.size() > 0)
+            for (SoapRole r : roles) {
                 SoapRoleEntity soapRoleEntity = roleRepository.findByName(r.getName());
                 List<SoapUserEntity> users = soapRoleEntity.getUsers();
                 users.add(userEntity);
@@ -113,12 +114,13 @@ public class UserService {
                 roleRepository.save(soapRoleEntity);
             }
     }
-    public boolean validate(String name, String login ,String password){
+
+    public boolean validate(String name, String login, String password) {
         return true;
     }
 
     public boolean update(String name, String login, String password, List<SoapRole> roles) {
-        if(remove(login)) return create(name,login,password,roles);
+        if (remove(login)) return create(name, login, password, roles);
         else return false;
     }
 }

@@ -97,6 +97,7 @@
         <xs:sequence>
             <xs:element name="id" type="xs:long"/>
             <xs:element name="name" type="xs:string"/>
+            <xs:element name="users" maxOccurs="unbounded" minOccurs="0" type="tns:soap-user"/>
         </xs:sequence>
     </xs:complexType>
 

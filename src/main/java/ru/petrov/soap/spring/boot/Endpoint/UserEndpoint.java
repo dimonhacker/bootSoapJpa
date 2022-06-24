@@ -6,10 +6,7 @@ import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
-
 import ru.petrov.soap.spring.boot.Service.UserService;
-
-import java.util.ArrayList;
 
 @Endpoint
 public class UserEndpoint {
@@ -43,7 +40,7 @@ public class UserEndpoint {
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "delUserRequest")
     @ResponsePayload
     public DelUserResponse getAllUsers(@RequestPayload DelUserRequest request) {
-        DelUserResponse delUserResponse=new DelUserResponse();
+        DelUserResponse delUserResponse = new DelUserResponse();
         boolean success = userService.remove(request.getLogin());
         delUserResponse.setSuccess(success);
         return delUserResponse;
@@ -52,18 +49,18 @@ public class UserEndpoint {
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "createUserRequest")
     @ResponsePayload
     public CreateUserResponse createUser(@RequestPayload CreateUserRequest request) {
-        CreateUserResponse createUserResponse=new CreateUserResponse();
+        CreateUserResponse createUserResponse = new CreateUserResponse();
         System.out.println(request.getRole());
-        boolean result = userService.create(request.getName(),request.getLogin(),request.getPassword(),request.getRole());
-       createUserResponse.setSuccess(result);
-       return createUserResponse;
+        boolean result = userService.create(request.getName(), request.getLogin(), request.getPassword(), request.getRole());
+        createUserResponse.setSuccess(result);
+        return createUserResponse;
     }
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "updateUserRequest")
     @ResponsePayload
     public UpdateUserResponse updateUser(@RequestPayload UpdateUserRequest request) {
-        UpdateUserResponse updateUserResponse=new UpdateUserResponse();
-        boolean result = userService.update(request.getName(),request.getLogin(),request.getPassword(),request.getRoles());
+        UpdateUserResponse updateUserResponse = new UpdateUserResponse();
+        boolean result = userService.update(request.getName(), request.getLogin(), request.getPassword(), request.getRoles());
         updateUserResponse.setSuccess(result);
         return updateUserResponse;
     }

@@ -4,7 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ru.petrov.soap.spring.boot.Entity.SoapRoleEntity;
-import ru.petrov.soap.spring.boot.Entity.SoapUserEntity;
 
 @Repository
 public interface RoleRepository extends JpaRepository<SoapRoleEntity, Long> {
