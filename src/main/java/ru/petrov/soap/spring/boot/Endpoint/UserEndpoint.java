@@ -53,7 +53,8 @@ public class UserEndpoint {
     @ResponsePayload
     public CreateUserResponse createUser(@RequestPayload CreateUserRequest request) {
         CreateUserResponse createUserResponse=new CreateUserResponse();
-        boolean result = userService.create(request.getName(),request.getLogin(),request.getPassword(),request.getRoles());
+        System.out.println(request.getRole());
+        boolean result = userService.create(request.getName(),request.getLogin(),request.getPassword(),request.getRole());
        createUserResponse.setSuccess(result);
        return createUserResponse;
     }

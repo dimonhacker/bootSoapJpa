@@ -11,4 +11,6 @@ public interface UserRepository extends JpaRepository<SoapUserEntity,String> {
 
     @Query(value = "SELECT * FROM soap_user as s WHERE s.login  = :login", nativeQuery = true)
     SoapUserEntity findByLogin(String login);
+
+
 }

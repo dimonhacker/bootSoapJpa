@@ -85,38 +85,32 @@ public class UserService {
 
     public boolean remove(String login){
         SoapUserEntity soapUserEntity = userRepository.findByLogin(login);
-        System.out.println(soapUserEntity.getName());
-        if(soapUserEntity!=null) {
-            userRepository.delete(soapUserEntity);
-            return true;
-        }
-        else  return false;
+       if(soapUserEntity!=null) {
+           userRepository.delete(soapUserEntity);
+       }
+       return true;
     }
 
     public boolean create(String name, String login ,String password, List<SoapRole> roles){
+        if(userRepository.findByLogin(login)!=null) return false;
         SoapUserEntity userEntity = new SoapUserEntity();
-        setUserNameLoginPass(name,login,password,userEntity);
-        boolean result = true;
-        if(userRepository.findByLogin(userEntity.getLogin())!=null) result = false;
-        else userRepository.save(userEntity);
-        if(!result) return false;
-        saveRoles(roles,userEntity);
-        return true;
-    }
-    public SoapUserEntity setUserNameLoginPass(String name, String login ,String password, SoapUserEntity userEntity){
         userEntity.setName(name);
         userEntity.setLogin(login);
         userEntity.setPassword(password);
-        return userEntity;
+        userRepository.save(userEntity);
+        saveRoles(roles,userEntity);
+        return true;
     }
+
     public void  saveRoles(List<SoapRole> roles, SoapUserEntity userEntity){
+        System.out.println(roles.size());
         if(roles.size()>0)
             for(SoapRole r: roles){
-                SoapRoleEntity soapRole = roleRepository.findByName(r.getName());
-                List<SoapUserEntity> users = soapRole.getUsers();
-                if(users==null) users = new ArrayList<>();
+                SoapRoleEntity soapRoleEntity = roleRepository.findByName(r.getName());
+                List<SoapUserEntity> users = soapRoleEntity.getUsers();
                 users.add(userEntity);
-                roleRepository.save(soapRole);
+                System.out.println("saving roles...");
+                roleRepository.save(soapRoleEntity);
             }
     }
     public boolean validate(String name, String login ,String password){

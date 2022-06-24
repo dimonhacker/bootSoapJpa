@@ -14,7 +14,7 @@ public class SoapUserEntity {
     private String login;
 
     private String password;
-    @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     private List<SoapRoleEntity> roles;
 
     public SoapUserEntity() {
