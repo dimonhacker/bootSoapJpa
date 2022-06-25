@@ -8,6 +8,8 @@ import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 import ru.petrov.soap.spring.boot.Service.UserService;
 
+import java.util.List;
+
 @Endpoint
 public class UserEndpoint {
 
@@ -50,7 +52,12 @@ public class UserEndpoint {
     @ResponsePayload
     public CreateUserResponse createUser(@RequestPayload CreateUserRequest request) {
         CreateUserResponse createUserResponse = new CreateUserResponse();
-        System.out.println(request.getRole());
+        List<String> errors = userService.validatePass(request.getName(), request.getLogin(), request.getPassword());
+        if (errors.size() > 0) {
+            createUserResponse.setSuccess(false);
+            createUserResponse.getErrors().addAll(errors);
+            return createUserResponse;
+        }
         boolean result = userService.create(request.getName(), request.getLogin(), request.getPassword(), request.getRole());
         createUserResponse.setSuccess(result);
         return createUserResponse;
@@ -60,7 +67,13 @@ public class UserEndpoint {
     @ResponsePayload
     public UpdateUserResponse updateUser(@RequestPayload UpdateUserRequest request) {
         UpdateUserResponse updateUserResponse = new UpdateUserResponse();
-        boolean result = userService.update(request.getName(), request.getLogin(), request.getPassword(), request.getRoles());
+        List<String> errors = userService.validatePass(request.getName(), request.getLogin(), request.getPassword());
+        if (errors.size() > 0) {
+            updateUserResponse.setSuccess(false);
+            updateUserResponse.getErrors().addAll(errors);
+            return updateUserResponse;
+        }
+        boolean result = userService.update(request.getName(), request.getLogin(), request.getPassword(), request.getRole());
         updateUserResponse.setSuccess(result);
         return updateUserResponse;
     }

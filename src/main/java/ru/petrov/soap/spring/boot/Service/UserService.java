@@ -10,6 +10,8 @@ import ru.petrov.soap.spring.boot.Repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class UserService {
@@ -115,12 +117,28 @@ public class UserService {
             }
     }
 
-    public boolean validate(String name, String login, String password) {
-        return true;
+    private static final String PASSWORD_PATTERN = "^.*(?=.*[0-9])(?=.*[A-Z]).*$";
+    private static final Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
+
+    public static boolean isValid(final String password) {
+        Matcher matcher = pattern.matcher(password);
+        return matcher.matches();
     }
 
+    public List<String> validatePass(String name, String login, String password) {
+        List<String> errors = new ArrayList<>();
+        if (name.equals("")) errors.add("invalid name");
+        if (login.equals("")) errors.add("invalid login");
+        if (!isValid(password)) errors.add("invalid password");
+        return errors;
+    }
+
+
     public boolean update(String name, String login, String password, List<SoapRole> roles) {
-        if (remove(login)) return create(name, login, password, roles);
-        else return false;
+        boolean removed = remove(login);
+        if (removed) {
+            create(name, login, password, roles);
+            return true;
+        } else return false;
     }
 }

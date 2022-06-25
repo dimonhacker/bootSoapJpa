@@ -17,8 +17,8 @@ public class RoleService {
 
     @PostConstruct
     void initRoles() {
-        String[] roles = {"admin","user", "moderator"};
-        for(String roleName : roles) {
+        String[] roles = {"admin", "user", "moderator"};
+        for (String roleName : roles) {
             SoapRoleEntity soapRoleEntity = roleRepository.findByName(roleName);
             if (soapRoleEntity == null) {
                 soapRoleEntity = new SoapRoleEntity();

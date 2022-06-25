@@ -1,37 +1,70 @@
-<!--Поиск по логину-->
+//Все пользователи без ролей
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
-                  xmlns:gs="http://localhost">
-    <soapenv:Header/>
-    <soapenv:Body>
-        <gs:getUserRequest>
-            <gs:login>login</gs:login>
-        </gs:getUserRequest>
-    </soapenv:Body>
+				  xmlns:gs="http://localhost">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <gs:getAllUsersRequest>
+      </gs:getAllUsersRequest>
+   </soapenv:Body>
 </soapenv:Envelope>
 
-<!--Удаление-->
+//Поиск по логину
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
-                  xmlns:gs="http://localhost">
-<soapenv:Header/>
-<soapenv:Body>
-    <gs:delUserRequest>
-        <gs:login>login</gs:login>
-    </gs:delUserRequest>
-</soapenv:Body>
+				  xmlns:gs="http://localhost">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <gs:getUserRequest>
+         <gs:login>Login</gs:login>
+      </gs:getUserRequest>
+   </soapenv:Body>
 </soapenv:Envelope>
 
-<!--Создание-->
+
+//Удаление
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
-                  xmlns:gs="http://localhost">
-<soapenv:Header/>
-<soapenv:Body>
-    <gs:createUserRequest>
-        <gs:name>Name</gs:name>
-        <gs:login>Login</gs:login>
-        <gs:password>passW0rd!</gs:password>
-        <gs:roles>
-            <gs:role>admin</gs:role>
-        </gs:roles>
-    </gs:createUserRequest>
-</soapenv:Body>
+				  xmlns:gs="http://localhost">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <gs:delUserRequest>
+         <gs:login>Login</gs:login>
+      </gs:delUserRequest>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+//Создание
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+				  xmlns:gs="http://localhost">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <gs:createUserRequest>
+		<gs:name>Name</gs:name>
+         <gs:login>Login</gs:login>
+		 <gs:password>passW0rd!</gs:password>
+		 <gs:role>
+                    <gs:id>1</gs:id>
+                    <gs:name>admin</gs:name>
+         </gs:role>
+		 <gs:role>
+                    <gs:id>2</gs:id>
+                    <gs:name>user</gs:name>
+         </gs:role>
+      </gs:createUserRequest>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+//Обновление
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+				  xmlns:gs="http://localhost">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <gs:updateUserRequest>
+		<gs:name>Name</gs:name>
+         <gs:login>Login</gs:login>
+		 <gs:password>passW0rd!</gs:password>
+		 <gs:role>
+                    <gs:id>1</gs:id>
+                    <gs:name>moderator</gs:name>
+         </gs:role>
+      </gs:updateUserRequest>
+   </soapenv:Body>
 </soapenv:Envelope>

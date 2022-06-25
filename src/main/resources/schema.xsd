@@ -27,7 +27,7 @@
                             <xs:element name="name" type="xs:string"/>
                             <xs:element name="login" type="xs:string"/>
                             <xs:element name="password" type="xs:string"/>
-                            <xs:element  name="roles" maxOccurs="unbounded" minOccurs="0" type="tns:soap-role"/>
+                            <xs:element  name="role" maxOccurs="unbounded" minOccurs="0" type="tns:soap-role"/>
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
