@@ -3,6 +3,7 @@ package ru.petrov.soap.spring.boot.Service;
 import localhost.SoapRole;
 import localhost.SoapUser;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.petrov.soap.spring.boot.Entity.SoapRoleEntity;
 import ru.petrov.soap.spring.boot.Entity.SoapUserEntity;
 import ru.petrov.soap.spring.boot.Repository.RoleRepository;
@@ -65,6 +66,7 @@ public class UserService {
     }
 
 
+    @Transactional
     public boolean remove(String login) {
         SoapUserEntity soapUserEntity = userRepository.findByLogin(login);
         if (soapUserEntity != null) {
@@ -74,6 +76,7 @@ public class UserService {
         return true;
     }
 
+    @Transactional
     public boolean create(String name, String login, String password, List<SoapRole> roles) {
         if (userRepository.findByLogin(login) != null) return false;
         SoapUserEntity userEntity = new SoapUserEntity();

@@ -15,7 +15,6 @@ public interface UserRepository extends JpaRepository<SoapUserEntity, String> {
     SoapUserEntity findByLogin(String login);
 
     @Modifying
-    @Transactional
     @Query(value = "Delete  from  users_roles  where user_login = :login", nativeQuery = true)
     void deleteByLogin(String login);
 }
