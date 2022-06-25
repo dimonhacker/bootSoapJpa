@@ -6,7 +6,7 @@ import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
-import ru.petrov.soap.spring.boot.Service.UserService;
+import ru.petrov.soap.spring.boot.Service.UserServiceImpl;
 
 import java.util.List;
 
@@ -16,18 +16,18 @@ public class UserEndpoint {
     private static final String NAMESPACE_URI = "http://localhost";
 
 
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
 
 
-    public UserEndpoint(UserService userService) {
-        this.userService = userService;
+    public UserEndpoint(UserServiceImpl userServiceImpl) {
+        this.userServiceImpl = userServiceImpl;
     }
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getUserRequest")
     @ResponsePayload
     public GetUserResponse getUser(@RequestPayload GetUserRequest request) {
         GetUserResponse getUserResponse = new GetUserResponse();
-        getUserResponse.setUser(userService.findByLogin(request.getLogin()));
+        getUserResponse.setUser(userServiceImpl.findByLogin(request.getLogin()));
         return getUserResponse;
     }
 
@@ -35,7 +35,7 @@ public class UserEndpoint {
     @ResponsePayload
     public GetAllUsersResponse getAllUsers() {
         GetAllUsersResponse getUsers = new GetAllUsersResponse();
-        getUsers.getUsers().addAll(userService.findAll());
+        getUsers.getUsers().addAll(userServiceImpl.findAll());
         return getUsers;
     }
 
@@ -43,7 +43,7 @@ public class UserEndpoint {
     @ResponsePayload
     public DelUserResponse getAllUsers(@RequestPayload DelUserRequest request) {
         DelUserResponse delUserResponse = new DelUserResponse();
-        boolean success = userService.remove(request.getLogin());
+        boolean success = userServiceImpl.remove(request.getLogin());
         delUserResponse.setSuccess(success);
         return delUserResponse;
     }
@@ -52,13 +52,13 @@ public class UserEndpoint {
     @ResponsePayload
     public CreateUserResponse createUser(@RequestPayload CreateUserRequest request) {
         CreateUserResponse createUserResponse = new CreateUserResponse();
-        List<String> errors = userService.validatePass(request.getName(), request.getLogin(), request.getPassword());
+        List<String> errors = userServiceImpl.validatePass(request.getName(), request.getLogin(), request.getPassword());
         if (errors.size() > 0) {
             createUserResponse.setSuccess(false);
             createUserResponse.getErrors().addAll(errors);
             return createUserResponse;
         }
-        boolean result = userService.create(request.getName(), request.getLogin(), request.getPassword(), request.getRole());
+        boolean result = userServiceImpl.create(request.getName(), request.getLogin(), request.getPassword(), request.getRole());
         createUserResponse.setSuccess(result);
         return createUserResponse;
     }
@@ -67,13 +67,13 @@ public class UserEndpoint {
     @ResponsePayload
     public UpdateUserResponse updateUser(@RequestPayload UpdateUserRequest request) {
         UpdateUserResponse updateUserResponse = new UpdateUserResponse();
-        List<String> errors = userService.validatePass(request.getName(), request.getLogin(), request.getPassword());
+        List<String> errors = userServiceImpl.validatePass(request.getName(), request.getLogin(), request.getPassword());
         if (errors.size() > 0) {
             updateUserResponse.setSuccess(false);
             updateUserResponse.getErrors().addAll(errors);
             return updateUserResponse;
         }
-        boolean result = userService.update(request.getName(), request.getLogin(), request.getPassword(), request.getRole());
+        boolean result = userServiceImpl.update(request.getName(), request.getLogin(), request.getPassword(), request.getRole());
         updateUserResponse.setSuccess(result);
         return updateUserResponse;
     }
