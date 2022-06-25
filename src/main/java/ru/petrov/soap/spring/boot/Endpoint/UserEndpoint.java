@@ -16,7 +16,7 @@ public class UserEndpoint {
     private static final String NAMESPACE_URI = "http://localhost";
 
 
-    private UserService userService;
+    private final UserService userService;
 
 
     public UserEndpoint(UserService userService) {

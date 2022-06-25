@@ -46,20 +46,6 @@ public class UserService {
         return soapUser;
     }
 
-    public SoapUserEntity getSoapUserEntity(SoapUser soapUser) {
-        SoapUserEntity soapUserEntity = new SoapUserEntity();
-        if (soapUser != null) {
-            soapUserEntity.setLogin(soapUser.getLogin());
-            soapUserEntity.setName(soapUser.getName());
-            soapUserEntity.setPassword(soapUser.getPassword());
-            List<SoapRole> soapRoleList = soapUser.getRole();
-            List<SoapRoleEntity> listRole = new ArrayList<>();
-            for (SoapRole r : soapRoleList) listRole.add(getSoapRoleEntity(r));
-            soapUser.getRole().addAll(soapRoleList);
-        }
-        return soapUserEntity;
-    }
-
     public SoapRole getSoapRole(SoapRoleEntity role) {
         SoapRole soapRole = new SoapRole();
         soapRole.setId(role.getId());
@@ -67,12 +53,6 @@ public class UserService {
         return soapRole;
     }
 
-    public SoapRoleEntity getSoapRoleEntity(SoapRole role) {
-        SoapRoleEntity soapRoleEntity = new SoapRoleEntity();
-        soapRoleEntity.setId(role.getId());
-        soapRoleEntity.setName(role.getName());
-        return soapRoleEntity;
-    }
 
     public List<SoapUser> findAll() {
         List<SoapUserEntity> list;
