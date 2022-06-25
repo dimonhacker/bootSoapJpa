@@ -117,6 +117,7 @@ public class UserService {
     }
 
 
+    @Transactional
     public boolean update(String name, String login, String password, List<SoapRole> roles) {
         boolean removed = remove(login);
         if (removed) {
