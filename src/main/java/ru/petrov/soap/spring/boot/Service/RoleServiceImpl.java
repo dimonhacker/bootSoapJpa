@@ -1,7 +1,7 @@
 package ru.petrov.soap.spring.boot.Service;
 
 import org.springframework.stereotype.Service;
-import ru.petrov.soap.spring.boot.Entity.SoapRoleEntity;
+import ru.petrov.soap.spring.boot.Model.Role;
 import ru.petrov.soap.spring.boot.Repository.RoleRepository;
 
 import javax.annotation.PostConstruct;
@@ -21,11 +21,11 @@ public class RoleServiceImpl implements RoleService{
     public void initRoles() {
         String[] roles = {"admin", "user", "moderator"};
         for (String roleName : roles) {
-            SoapRoleEntity soapRoleEntity = roleRepository.findByName(roleName);
-            if (soapRoleEntity == null) {
-                soapRoleEntity = new SoapRoleEntity();
-                soapRoleEntity.setName(roleName);
-                roleRepository.save(soapRoleEntity);
+            Role role = roleRepository.findByName(roleName);
+            if (role == null) {
+                role = new Role();
+                role.setName(roleName);
+                roleRepository.save(role);
             }
         }
     }

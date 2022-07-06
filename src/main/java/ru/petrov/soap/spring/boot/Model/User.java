@@ -1,4 +1,4 @@
-package ru.petrov.soap.spring.boot.Entity;
+package ru.petrov.soap.spring.boot.Model;
 
 
 import javax.persistence.*;
@@ -6,7 +6,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "SoapUser")
-public class SoapUserEntity {
+public class User {
     private String name;
 
     @Id
@@ -14,10 +14,15 @@ public class SoapUserEntity {
     private String login;
 
     private String password;
-    @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    private List<SoapRoleEntity> roles;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_login"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private List<Role> roles;
 
-    public SoapUserEntity() {
+    public User() {
     }
 
     public String getName() {
@@ -44,11 +49,11 @@ public class SoapUserEntity {
         this.password = password;
     }
 
-    public List<SoapRoleEntity> getRole() {
+    public List<Role> getRole() {
         return roles;
     }
 
-    public void setRole(List<SoapRoleEntity> role) {
+    public void setRole(List<Role> role) {
         this.roles = role;
     }
 

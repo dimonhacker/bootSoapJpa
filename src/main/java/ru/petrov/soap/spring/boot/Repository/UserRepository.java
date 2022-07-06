@@ -4,16 +4,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import ru.petrov.soap.spring.boot.Entity.SoapUserEntity;
+import ru.petrov.soap.spring.boot.Model.User;
 
 @Repository
-public interface UserRepository extends JpaRepository<SoapUserEntity, String> {
+public interface UserRepository extends JpaRepository<User, String> {
 
 
     @Query(value = "SELECT * FROM soap_user as s WHERE s.login  = :login", nativeQuery = true)
-    SoapUserEntity findByLogin(String login);
+    User findByLogin(String login);
 
-    @Modifying
-    @Query(value = "Delete  from  users_roles  where user_login = :login", nativeQuery = true)
-    void deleteByLogin(String login);
 }
