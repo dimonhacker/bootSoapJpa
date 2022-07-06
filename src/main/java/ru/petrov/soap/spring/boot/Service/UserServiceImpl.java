@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.petrov.soap.spring.boot.Model.Role;
 import ru.petrov.soap.spring.boot.Model.User;
-import ru.petrov.soap.spring.boot.Repository.RoleRepository;
 import ru.petrov.soap.spring.boot.Repository.UserRepository;
 
 import java.util.ArrayList;
@@ -27,36 +26,6 @@ public class UserServiceImpl implements UserService {
     public SoapUser findByLogin(String login) {
         User user = userRepository.findByLogin(login);
         return getSoapUser(user, true);
-    }
-
-    public SoapUser getSoapUser(User user, boolean requireRoles) {
-        SoapUser soapUser = new SoapUser();
-        if (user != null) {
-            soapUser.setLogin(user.getLogin());
-            soapUser.setName(user.getName());
-            soapUser.setPassword(user.getPassword());
-            if (requireRoles) {
-                List<SoapRole> soapRoleList = new ArrayList<>();
-                List<Role> listRole = user.getRole();
-                for (Role r : listRole) soapRoleList.add(getSoapRole(r));
-                soapUser.getRole().addAll(soapRoleList);
-            }
-        }
-        return soapUser;
-    }
-
-    public SoapRole getSoapRole(Role role) {
-        SoapRole soapRole = new SoapRole();
-        soapRole.setId(role.getId());
-        soapRole.setName(role.getName());
-        return soapRole;
-    }
-
-    public Role getRole(SoapRole soapRole) {
-        Role role = new Role();
-        role.setId(soapRole.getId());
-        role.setName(soapRole.getName());
-        return role;
     }
 
 
@@ -95,21 +64,6 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
-    public List<Role> getRoles(List<SoapRole> roles) {
-        List<Role> roleList = new ArrayList<>();
-        for (SoapRole r : roles) {
-            roleList.add(getRole(r));
-        }
-        return roleList;
-    }
-
-    private static final String PASSWORD_PATTERN = "^.*(?=.*[0-9])(?=.*[A-Z]).*$";
-    private static final Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
-
-    public static boolean isValid(final String password) {
-        Matcher matcher = pattern.matcher(password);
-        return matcher.matches();
-    }
 
     public List<String> validatePass(String name, String login, String password) {
         List<String> errors = new ArrayList<>();
@@ -130,5 +84,50 @@ public class UserServiceImpl implements UserService {
         } else return false;
     }
 
+    private List<Role> getRoles(List<SoapRole> roles) {
+        List<Role> roleList = new ArrayList<>();
+        for (SoapRole r : roles) {
+            roleList.add(getRole(r));
+        }
+        return roleList;
+    }
+
+    private static final String PASSWORD_PATTERN = "^.*(?=.*[0-9])(?=.*[A-Z]).*$";
+    private static final Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
+
+    private static boolean isValid(final String password) {
+        Matcher matcher = pattern.matcher(password);
+        return matcher.matches();
+    }
+
+    private SoapUser getSoapUser(User user, boolean requireRoles) {
+        SoapUser soapUser = new SoapUser();
+        if (user != null) {
+            soapUser.setLogin(user.getLogin());
+            soapUser.setName(user.getName());
+            soapUser.setPassword(user.getPassword());
+            if (requireRoles) {
+                List<SoapRole> soapRoleList = new ArrayList<>();
+                List<Role> listRole = user.getRole();
+                for (Role r : listRole) soapRoleList.add(getSoapRole(r));
+                soapUser.getRole().addAll(soapRoleList);
+            }
+        }
+        return soapUser;
+    }
+
+    private SoapRole getSoapRole(Role role) {
+        SoapRole soapRole = new SoapRole();
+        soapRole.setId(role.getId());
+        soapRole.setName(role.getName());
+        return soapRole;
+    }
+
+    private Role getRole(SoapRole soapRole) {
+        Role role = new Role();
+        role.setId(soapRole.getId());
+        role.setName(soapRole.getName());
+        return role;
+    }
 
 }
