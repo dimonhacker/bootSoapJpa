@@ -64,16 +64,6 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
-
-    public List<String> validatePass(String name, String login, String password) {
-        List<String> errors = new ArrayList<>();
-        if (name.equals("")) errors.add("invalid name");
-        if (login.equals("")) errors.add("invalid login");
-        if (!isValid(password)) errors.add("invalid password");
-        return errors;
-    }
-
-
     @Override
     @Transactional
     public boolean update(String name, String login, String password, List<SoapRole> roles) {
@@ -84,12 +74,12 @@ public class UserServiceImpl implements UserService {
         } else return false;
     }
 
-    private List<Role> getRoles(List<SoapRole> roles) {
-        List<Role> roleList = new ArrayList<>();
-        for (SoapRole r : roles) {
-            roleList.add(getRole(r));
-        }
-        return roleList;
+    public List<String> validatePass(String name, String login, String password) {
+        List<String> errors = new ArrayList<>();
+        if (name.equals("")) errors.add("invalid name");
+        if (login.equals("")) errors.add("invalid login");
+        if (!isValid(password)) errors.add("invalid password");
+        return errors;
     }
 
     private static final String PASSWORD_PATTERN = "^.*(?=.*[0-9])(?=.*[A-Z]).*$";
@@ -98,6 +88,21 @@ public class UserServiceImpl implements UserService {
     private static boolean isValid(final String password) {
         Matcher matcher = pattern.matcher(password);
         return matcher.matches();
+    }
+
+    private List<Role> getRoles(List<SoapRole> roles) {
+        List<Role> roleList = new ArrayList<>();
+        for (SoapRole r : roles) {
+            roleList.add(getRole(r));
+        }
+        return roleList;
+    }
+
+    private Role getRole(SoapRole soapRole) {
+        Role role = new Role();
+        role.setId(soapRole.getId());
+        role.setName(soapRole.getName());
+        return role;
     }
 
     private SoapUser getSoapUser(User user, boolean requireRoles) {
@@ -123,11 +128,6 @@ public class UserServiceImpl implements UserService {
         return soapRole;
     }
 
-    private Role getRole(SoapRole soapRole) {
-        Role role = new Role();
-        role.setId(soapRole.getId());
-        role.setName(soapRole.getName());
-        return role;
-    }
+
 
 }
