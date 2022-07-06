@@ -76,7 +76,6 @@ public class UserServiceImpl implements UserService {
     public boolean remove(String login) {
         User user = userRepository.findByLogin(login);
         if (user != null) {
-            //userRepository.deleteByLogin(login);
             userRepository.delete(user);
             return true;
         }
